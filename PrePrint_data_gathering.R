@@ -77,72 +77,67 @@ asy_PiB_p <- c(0,0,0,0,0,0)
 a<- t.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
 asy_PiB_p[1] <- a$p.value
 aa <- t.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
+absasy_PiB_p[1] <- aa$p.value
 
 b<- t.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
 asy_PiB_p[2] <- b$p.value
 bb <- t.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
+absasy_PiB_p[2] <- bb$p.value
 
 c <- t.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
 asy_PiB_p[3] <- c$p.value
 cc <- t.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
+absasy_PiB_p[3] <- cc$p.value
 
 d <- t.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
 asy_PiB_p[4] <- d$p.value
 dd <- t.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
+absasy_PiB_p[4] <- dd$p.value
+
 e<-t.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
 asy_PiB_p[5] <- e$p.value
 ee <- t.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
+absasy_PiB_p[5] <- ee$p.value
 
 f <- t.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
 asy_PiB_p[6]<- f$p.value
 ff <- t.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
-
+absasy_PiB_p[6]<- ff$p.value
 
 #t values
 asy_PiB_t <- c(a$statistic,b$statistic,c$statistic,d$statistic,e$statistic,f$statistic)
 absasy_PiB_t <- c(aa$statistic,bb$statistic,cc$statistic,dd$statistic,ee$statistic,ff$statistic)
+
+#p values
+asy_PiB_p
+absasy_PiB_p
+
 #p adjustments
 asy_PiB_adjust_p <- p.adjust(asy_PiB_p,method = "fdr")
+absasy_PiB_adjust_p <- p.adjust(absasy_PiB_p,method = "fdr")
 
 #Asymmetry and Task Performance
 library("irr")
 data$FaceName_PostScanAccuracy[data$FaceName_PostScanAccuracy == "NA"] <- NA
 
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 frontal_med_orb_asy_accuracy <-cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 frontal_med_orb_absasy_accuracy<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 frontal_mid_asy_accuracy <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 frontal_mid_absasy_accuracy<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
-reg<-lm(as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE) ~ data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR)
-coeff=coefficients(reg)
-abline(reg)
 frontal_sup_medial_asy_accuracy<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 frontal_sup_medial_absasy_accuracy<-cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 putamen_asy_accuracy <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 putamen_absasy_accuracy<- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 supp_motor_area_asy_accuracy<- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 supp_motor_area_absasy_accuracy<-cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
-reg<-lm(as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE) ~ data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR)
-coeff=coefficients(reg)
-abline(reg)
 thal_VPL_asy_accuracy<- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE))
 thal_VPL_absasy_accuracy<- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, as.numeric(data$FaceName_PostScanAccuracy, na.rm = TRUE), use = "complete.obs")
+
 #correlation
 asy_accuracy_c <- c(putamen_asy_accuracy$estimate,  thal_VPL_asy_accuracy$estimate, 
                     frontal_sup_medial_asy_accuracy$estimate, frontal_mid_asy_accuracy$estimate, 
@@ -248,41 +243,32 @@ absasy_sex_adjust_p <- p.adjust(pvalList2, method = 'fdr')
 
 
 #Asymmetry and Education
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$Education)
 frontal_med_orb_asy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$Education, use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$Education)
 frontal_med_orb_absasy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$Education, use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$Education)
 frontal_mid_asy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$Education, use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$Education)
 frontal_mid_absasy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$Education, use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$Education)
 frontal_sup_medial_asy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$Education, use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$Education)
 frontal_sup_medial_absasy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$Education, use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$Education)
 putamen_asy_education <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$Education, use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$Education)
 putamen_absasy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$Education, use = "complete.obs")
 
-plot(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$Education)
 supp_motor_area_asy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$Education, use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$Education)
-reg<-lm(data$Education ~ data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR)
-coeff=coefficients(reg)
-abline(reg)
 supp_motor_area_absasy_education <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$Education, use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$Education)
+
 thal_VPL_asy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$Education, use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$Education)
 thal_VPL_absasy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$Education, use = "complete.obs")
 #c-values
 asy_education_c <- c(putamen_asy_education$estimate, thal_VPL_asy_education$estimate, 
                      frontal_sup_medial_asy_education$estimate, frontal_mid_asy_education$estimate,
                      supp_motor_area_asy_education$estimate, frontal_med_orb_asy_education$estimate)
+
+absasy_education_c <- c(putamen_absasy_education$estimate, thal_VPL_absasy_education$estimate, 
+                     frontal_sup_medial_absasy_education$estimate, frontal_mid_absasy_education$estimate,
+                     supp_motor_area_absasy_education$estimate, frontal_med_orb_absasy_education$estimate)
+
 
 #p adjustments
 asy_education_p <- c(putamen_asy_education$p.value, thal_VPL_asy_education$p.value, 
@@ -307,10 +293,17 @@ absasy_FDG_p
  
 asy_FDG_adjust_p 
 absasy_FDG_adjust_p 
+
 #PiB
-asy_PiB_t
+asy_PiB_t 
 absasy_PiB_t
-asy_PiB_adjust_p <- p.adjust(asy_PiB_p,method = "fdr",n=6)
+
+asy_PiB_p
+absasy_PiB_p
+
+asy_PiB_adjust_p
+absasy_PiB_adjust_p
+
 
 #Performance
 asy_accuracy_c 
@@ -318,6 +311,7 @@ absasy_accuracy_c
 
 asy_accuracy_p 
 absasy_accuracy_p 
+
 asy_accuracy_adjust_p 
 absasy_accuracy_adjust_p 
 
@@ -327,19 +321,24 @@ absasy_age_c
 
 asy_age_p 
 absasy_age_p 
+
 asy_age_adjust_p 
 absasy_age_adjust_p 
 
 #Sex
-pvalList1
-pvalList2
+asy_Sex_t
+absasy_Sex_t
 
 asy_sex_p
 absasy_sex_p
+
 asy_sex_adjust_p
 absasy_sex_adjust_p
 
 #Education
+asy_education_c
+absasy_education_c
+
 asy_education_p
 absasy_education_p
 
