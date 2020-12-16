@@ -6,7 +6,7 @@ library(ggplot2)
 library("ggpubr")
 
 # IMPORTING Data ###########################################################
-data <- import("~/Desktop/GPN/KLU_APC2_Master_2020_09_18.xlsx")
+data <- import("~/Desktop/GPN/KLU_APC2_Master_2020_12_16.xlsx")
 #data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_09_18.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
@@ -279,7 +279,10 @@ plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$Education)
 thal_VPL_asy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$Education, use = "complete.obs")
 plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$Education)
 thal_VPL_absasy_education<- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$Education, use = "complete.obs")
-#r-values
+#c-values
+asy_education_c <- c(putamen_asy_education$estimate, thal_VPL_asy_education$estimate, 
+                     frontal_sup_medial_asy_education$estimate, frontal_mid_asy_education$estimate,
+                     supp_motor_area_asy_education$estimate, frontal_med_orb_asy_education$estimate)
 
 #p adjustments
 asy_education_p <- c(putamen_asy_education$p.value, thal_VPL_asy_education$p.value, 
@@ -290,7 +293,7 @@ absasy_education_p <- c(putamen_absasy_education$p.value, thal_VPL_absasy_educat
                         frontal_sup_medial_absasy_education$p.value, frontal_mid_absasy_education$p.value,
                         supp_motor_area_absasy_education$p.value, frontal_med_orb_absasy_education$p.value)
 
-asy_education_adjust_p <- p.adjust(asy_education_p,method = "fdr",n=length(asy_education_p))
+asy_education_adjust_p <- p.adjust(asy_education_p,method = "fdr")
 absasy_education_adjust_p <- p.adjust(absasy_education_p,method = "fdr",n=length(absasy_education_p))
 
 
