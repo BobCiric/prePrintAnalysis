@@ -46,38 +46,59 @@ boxData$Frontal_Med_OrbCat[71:140] <- "Frontal_Med_Orb_R"
 boxData$Supp_Motor_AreaCat[71:140] <- "Supp_Motor_Area_R"
 
 ggboxplot(boxData, x = "PutamenCat", y = "Putamen", 
-          main = "Putamen", 
+          title = "a. Putamen",
           color = "PutamenCat", legend = "None", palette = c("#00AFBB", "#E7B800"),
-          ylab = "Putamen Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
+          ylab = "Putamen Activation", xlab = "Left & Right Hemsiphere") + geom_jitter(color="black", size=0.4, alpha=0.9) +
+          font("title", size = 20, color = "black", face = "bold")+
+          font("xlab", size = 20, color = "black")+
+          font("ylab", size = 20, color = "black")+
+          font("x.text", size = 20)
+
 
 ggboxplot(boxData, x = "ThalamusCat", y = "Thalamus", 
-          main = "Thal_VPL", legend = "None",
+          main = "b. Thal_VPL",
           color = "ThalamusCat", palette = c("#00AFBB", "#E7B800"),
-          ylab = "Thalamus Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
+          ylab = "Thalamus Activation", xlab = "Left & Right Hemesphere") + geom_jitter(color="black", size=0.4, alpha=0.9) +
+          font("title", size = 20, color = "black", face = "bold")+
+          font("xlab", size = 20, color = "black")+
+          font("ylab", size = 20, color = "black")+
+          font("x.text", size = 20)
 
 ggboxplot(boxData, x = "Frontal_MidCat", y = "Frontal_Mid", 
-          main = "Frontal_Mid", legend = "None",
+          main = "d. Frontal_Mid", legend = "None",
           color = "Frontal_MidCat", palette = c("#00AFBB", "#E7B800"),
-          ylab = "Middle Frontal Gyrus Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
+          ylab = "Middle Frontal Gyrus Activation", xlab = "Left & Right Hemisphere") + geom_jitter(color="black", size=0.4, alpha=0.9) +
+          font("title", size = 20, color = "black", face = "bold")+
+          font("xlab", size = 20, color = "black")+
+          font("ylab", size = 20, color = "black")+
+          font("x.text", size = 20)
 
 ggboxplot(boxData, x = "Frontal_Sup_MedialCat", y = "Frontal_Sup_Medial", 
-          main = "Frontal_Sup_Medial", legend = "None",
+          main = "c.  Frontal_Sup_Medial", legend = "None",
           color = "Frontal_Sup_MedialCat", palette = c("#00AFBB", "#E7B800"),
-          ylab = "Superior Frontal Gyrus Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
+          ylab = "Superior Frontal Gyrus Activation", xlab = "Left & Right Hemisphere") + geom_jitter(color="black", size=0.4, alpha=0.9) +
+          font("title", size = 20, color = "black", face = "bold")+
+          font("xlab", size = 20, color = "black")+
+          font("ylab", size = 20, color = "black")+
+          font("x.text", size = 20)
 
 ggboxplot(boxData, x = "Frontal_Med_OrbCat", y = "Frontal_Med_Orb", 
-          main = "Frontal_Med_Orb", legend = "None",
+          main = "f. Frontal_Med_Orb", legend = "None",
           color = "Frontal_Med_OrbCat", palette = c("#00AFBB", "#E7B800"),
-          ylab = "Medial Orbitofrontal Cortex Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
+          ylab = "Medial Orbitofrontal Cortex Activation", xlab = "Left & Right Hemisphere") + geom_jitter(color="black", size=0.4, alpha=0.9) +
+          font("title", size = 20, color = "black", face = "bold")+
+          font("xlab", size = 20, color = "black")+
+          font("ylab", size = 20, color = "black")+
+          font("x.text", size = 20)
 
 ggboxplot(boxData, x = "Supp_Motor_AreaCat", y = "Supp_Motor_Area", 
-          main = "Supp_Motor_Area", legend = "None",
+          main = "e. Supp_Motor_Area", legend = "None",
           color = "Supp_Motor_AreaCat", palette = c("#00AFBB", "#E7B800"),
-          ylab = "Supplement Motor Area Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
-
-
-
-
+          ylab = "Supplement Motor Area Activation", xlab = "Left & Right Hemisphere") + geom_jitter(color="black", size=0.4, alpha=0.9) +
+          font("title", size = 20, color = "black", face = "bold")+
+          font("xlab", size = 20, color = "black")+
+          font("ylab", size = 20, color = "black")+
+          font("x.text", size = 20)
 
 # AI WITH SEX DIFFERENCE #######################################################
 #Putamen **
