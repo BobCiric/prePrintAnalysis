@@ -6,7 +6,8 @@ pacman::p_load(pacman, rio)
 library("ggpubr")
 
 # IMPORTING Data ###########################################################
-data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_09_18.xlsx")
+data <- import("~/Desktop/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_09_18.xlsx")
 data <- data[is.na(data$FaceNames_Exclude), ] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1, ] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage), ] # Comment out for longitudinal studies
@@ -30,9 +31,9 @@ boxData <- data.frame('Putamen' = c(data$FaceNames_Pos_Novel_Control_Putamen_L,
                       'Frontal_Sup_Medial' = c(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_L,
                                                data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_R),
                       'Frontal_Sup_MedialCat'= c('Frontal_Sup_Medial_L'),
-                      'Frontal_Med_Ord' = c(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_L,
+                      'Frontal_Med_Orb' = c(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_L,
                                             data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_R),
-                      'Frontal_Med_OrdCat'= c('Frontal_Med_Ord_L'),
+                      'Frontal_Med_OrbCat'= c('Frontal_Med_Orb_L'),
                       'Supp_Motor_Area' = c(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_L,
                                             data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_R),
                       'Supp_Motor_AreaCat'= c('Supp_Motor_Area_L'))
@@ -41,30 +42,36 @@ boxData$PutamenCat[71:140] <- "Putamen_R"
 boxData$ThalamusCat[71:140] <- "Thalamus_R"
 boxData$Frontal_MidCat[71:140] <- "Frontal_Mid_R"
 boxData$Frontal_Sup_MedialCat[71:140] <- "Frontal_Sup_Medial_R"
-boxData$Frontal_Med_OrdCat[71:140] <- "Frontal_Med_Ord_R"
+boxData$Frontal_Med_OrbCat[71:140] <- "Frontal_Med_Orb_R"
 boxData$Supp_Motor_AreaCat[71:140] <- "Supp_Motor_Area_R"
 
 ggboxplot(boxData, x = "PutamenCat", y = "Putamen", 
-          color = "PutamenCat", palette = c("#00AFBB", "#E7B800"),
+          main = "Putamen", 
+          color = "PutamenCat", legend = "None", palette = c("#00AFBB", "#E7B800"),
           ylab = "Putamen Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
 
 ggboxplot(boxData, x = "ThalamusCat", y = "Thalamus", 
+          main = "Thal_VPL", legend = "None",
           color = "ThalamusCat", palette = c("#00AFBB", "#E7B800"),
           ylab = "Thalamus Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
 
 ggboxplot(boxData, x = "Frontal_MidCat", y = "Frontal_Mid", 
+          main = "Frontal_Mid", legend = "None",
           color = "Frontal_MidCat", palette = c("#00AFBB", "#E7B800"),
           ylab = "Middle Frontal Gyrus Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
 
 ggboxplot(boxData, x = "Frontal_Sup_MedialCat", y = "Frontal_Sup_Medial", 
+          main = "Frontal_Sup_Medial", legend = "None",
           color = "Frontal_Sup_MedialCat", palette = c("#00AFBB", "#E7B800"),
           ylab = "Superior Frontal Gyrus Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
 
-ggboxplot(boxData, x = "Frontal_Med_OrdCat", y = "Frontal_Med_Ord", 
-          color = "Frontal_Med_OrdCat", palette = c("#00AFBB", "#E7B800"),
+ggboxplot(boxData, x = "Frontal_Med_OrbCat", y = "Frontal_Med_Orb", 
+          main = "Frontal_Med_Orb", legend = "None",
+          color = "Frontal_Med_OrbCat", palette = c("#00AFBB", "#E7B800"),
           ylab = "Medial Orbitofrontal Cortex Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
 
 ggboxplot(boxData, x = "Supp_Motor_AreaCat", y = "Supp_Motor_Area", 
+          main = "Supp_Motor_Area", legend = "None",
           color = "Supp_Motor_AreaCat", palette = c("#00AFBB", "#E7B800"),
           ylab = "Supplement Motor Area Activation", xlab = "Left & Right regions") + geom_jitter(color="black", size=0.4, alpha=0.9)
 

@@ -345,3 +345,10 @@ absasy_education_p
 asy_education_adjust_p
 absasy_education_adjust_p
 
+# BoxPlots ####################################################3
+
+boxplot(data$FaceNames_Pos_Novel_Control_Putamen_L, data$FaceNames_Pos_Novel_Control_Putamen_R, 
+        main = "Putamen Activation", col = c("blue","yellow"), 
+        xlab = c("Left Putamen", "Right Putamen"), ylab("Putamen Activation"))
+        
+
