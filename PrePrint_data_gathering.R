@@ -6,7 +6,9 @@ library(ggplot2)
 library("ggpubr")
 
 # IMPORTING Data ###########################################################
-data <- import("~/Desktop/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+
+library("readxl")
+data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
 #data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_09_18.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
@@ -14,12 +16,13 @@ data <- data[!is.na(data$FaceNames_GoodCoverage),]
 data$PiB_Median_Split <- NA
 data$Sex[data$Sex == "NaN"] <- NA
 PiB_Median = median(data$PiB_SUVR_GTM_FS_Global, na.rm = 'True');
+data$WMH_Adjust <- data$WMH_Volume_mm3/data$Total_Brain_Volume_mm3;
 
 # PiB Median Split ###############################################################
 data$PiB_Median_Split[which(data$PiB_SUVR_GTM_FS_Global > PiB_Median)] <- "high_PiB"
 data$PiB_Median_Split[which(data$PiB_SUVR_GTM_FS_Global <= PiB_Median)] <- "low_PiB"
 
-#Function forr p test from linear model ###########################################
+#Function for p test from linear model ###########################################
 lmp <- function (modelobject) {
   if (class(modelobject) != "lm") stop("Not an object of class 'lm' ")
   f <- summary(modelobject)$fstatistic
@@ -27,6 +30,46 @@ lmp <- function (modelobject) {
   attributes(p) <- NULL
   return(p)
 }
+# AI WITH WMHI ################################################################
+mdl1 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+mdl11 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+plot(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$WMH_Adjust)
+plot(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$WMH_Adjust)
+
+mdl2 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+mdl22 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$WMH_Adjust)
+plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$WMH_Adjust)
+
+mdl3 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+mdl33 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$WMH_Adjust)
+plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$WMH_Adjust)
+
+mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+reg <- lm(WMH_Adjust ~  FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data = data)
+plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$WMH_Adjust)
+abline(reg, col = 'blue')
+
+plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$WMH_Adjust)
+
+mdl5 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+mdl55 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+
+mdl6 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+mdl66 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+
+#P ADJUST ######################################################################
+
+asy_WMH_p<- c(mdl1$p.value, mdl2$p.value, mdl3$p.value, mdl4$p.value, mdl5$p.value, mdl6$p.value)
+absasy_WMH_p <- c(mdl11$p.value, mdl22$p.value, mdl33$p.value, mdl44$p.value, mdl55$p.value, mdl66$p.value)
+asy_WMH_c <- c(mdl1$estimate, mdl2$estimate, mdl3$estimate, mdl4$estimate, mdl5$estimate, mdl6$estimate)
+absasy_WMH_c <- c(mdl11$estimate, mdl22$estimate, mdl33$estimate, mdl44$estimate, mdl55$estimate, mdl66$estimate)
+asy_WMH_adjust_p <- p.adjust(asy_FDG_p, method = 'fdr')
+absasy_WMH_adjust_p <- p.adjust(absasy_FDG_p, method = 'fdr')
+
+
 
 # AI WITH FDG ##################################################################
 #Putamen 
@@ -284,6 +327,16 @@ absasy_education_adjust_p <- p.adjust(absasy_education_p,method = "fdr",n=length
 
 
 ## Report ##
+#WMH
+asy_WMH_c 
+absasy_WMH_c
+
+asy_WMH_p 
+absasy_WMH_p 
+
+asy_WMH_adjust_p 
+absasy_WMH_adjust_p 
+
 #FDG
 asy_FDG_c 
 absasy_FDG_c

@@ -7,13 +7,15 @@ library(ggplot2)
 ## Ellie Analysis ########################################################################################################################
 
 # IMPORTING Data ###########################################################
-data <- import("~/Desktop/GPN/KLU_APC2_Master_2020_09_18.xlsx")
+library("readxl")
+data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
 # Filtering Data ##################################################################
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
 data$PiB_Median_Split <- NA
 PiB_Median = median(data$PiB_SUVR_GTM_FS_Global, na.rm = 'True');
+data$WMH_Adjust <- data$WMH_Volume_mm3/data$Total_Brain_Volume_mm3;
 
 # PiB Median Split ###############################################################
 data$PiB_Median_Split[which(data$PiB_SUVR_GTM_FS_Global > PiB_Median)] <- "high_PiB"
