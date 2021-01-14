@@ -9,7 +9,7 @@ library("ggpubr")
 
 library("readxl")
 data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_09_18.xlsx")
+#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
@@ -66,8 +66,8 @@ asy_WMH_p<- c(mdl1$p.value, mdl2$p.value, mdl3$p.value, mdl4$p.value, mdl5$p.val
 absasy_WMH_p <- c(mdl11$p.value, mdl22$p.value, mdl33$p.value, mdl44$p.value, mdl55$p.value, mdl66$p.value)
 asy_WMH_c <- c(mdl1$estimate, mdl2$estimate, mdl3$estimate, mdl4$estimate, mdl5$estimate, mdl6$estimate)
 absasy_WMH_c <- c(mdl11$estimate, mdl22$estimate, mdl33$estimate, mdl44$estimate, mdl55$estimate, mdl66$estimate)
-asy_WMH_adjust_p <- p.adjust(asy_FDG_p, method = 'fdr')
-absasy_WMH_adjust_p <- p.adjust(absasy_FDG_p, method = 'fdr')
+asy_WMH_adjust_p <- p.adjust(asy_WMH_p, method = 'fdr')
+absasy_WMH_adjust_p <- p.adjust(absasy_WMH_p, method = 'fdr')
 
 
 
