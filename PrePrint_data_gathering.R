@@ -9,7 +9,7 @@ library("ggpubr")
 
 library("readxl")
 data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_09_18.xlsx")
+#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
