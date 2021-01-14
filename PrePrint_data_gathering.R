@@ -66,8 +66,8 @@ asy_WMH_p<- c(mdl1$p.value, mdl2$p.value, mdl3$p.value, mdl4$p.value, mdl5$p.val
 absasy_WMH_p <- c(mdl11$p.value, mdl22$p.value, mdl33$p.value, mdl44$p.value, mdl55$p.value, mdl66$p.value)
 asy_WMH_c <- c(mdl1$estimate, mdl2$estimate, mdl3$estimate, mdl4$estimate, mdl5$estimate, mdl6$estimate)
 absasy_WMH_c <- c(mdl11$estimate, mdl22$estimate, mdl33$estimate, mdl44$estimate, mdl55$estimate, mdl66$estimate)
-asy_WMH_adjust_p <- p.adjust(asy_FDG_p, method = 'fdr')
-absasy_WMH_adjust_p <- p.adjust(absasy_FDG_p, method = 'fdr')
+asy_WMH_adjust_p <- p.adjust(asy_WMH_p, method = 'fdr')
+absasy_WMH_adjust_p <- p.adjust(absasy_WMH_p, method = 'fdr')
 
 
 
@@ -116,6 +116,7 @@ absasy_FDG_adjust_p <- p.adjust(absasy_FDG_p, method = 'fdr')
 #Two sided = mean difference can be less than/greater than 0
 #Variances are assumed to NOT be equal (false)
 asy_PiB_p <- c(0,0,0,0,0,0)
+absasy_PiB_p <- c(0,0,0,0,0,0)
 
 a<- t.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR ~ data$PiB_Median_Split, mu = 0, alt="two.sided", conf= 0.95, var.eq=F,paired=F)
 asy_PiB_p[1] <- a$p.value
