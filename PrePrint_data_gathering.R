@@ -4,6 +4,7 @@ dev.off()
 pacman::p_load(pacman, rio)
 library(ggplot2)
 library("ggpubr")
+library('ppcor')
 
 # IMPORTING Data ###########################################################
 
@@ -16,7 +17,7 @@ data <- data[!is.na(data$FaceNames_GoodCoverage),]
 data$PiB_Median_Split <- NA
 data$Sex[data$Sex == "NaN"] <- NA
 PiB_Median = median(data$PiB_SUVR_GTM_FS_Global, na.rm = 'True');
-data$WMH_Adjust <- data$WMH_Volume_mm3/data$Total_Brain_Volume_mm3;
+#data$WMH_Adjust <- data$WMH_Volume_mm3/data$Total_Brain_Volume_mm3;
 
 # PiB Median Split ###############################################################
 data$PiB_Median_Split[which(data$PiB_SUVR_GTM_FS_Global > PiB_Median)] <- "high_PiB"
@@ -31,34 +32,38 @@ lmp <- function (modelobject) {
   return(p)
 }
 # AI WITH WMHI ################################################################
-mdl1 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-mdl11 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$WMH_Adjust)
-plot(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$WMH_Adjust)
+complete_data <- data[!is.na(data$WMH_Volume_mm3),] #WMHI and Total Brain Volume variables have missing data for the same participants
+#All asymmetry columns have complete data
+which(is.na(data$Total_Brain_Volume_mm3)) == which(is.na(data$WMH_Volume_mm3))
 
-mdl2 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-mdl22 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$WMH_Adjust)
-plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$WMH_Adjust)
+mdl1 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+mdl11 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+plot(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$WMH_Volume_mm3)
+plot(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$WMH_Volume_mm3)
 
-mdl3 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-mdl33 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$WMH_Adjust)
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$WMH_Adjust)
+mdl2 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+mdl22 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$WMH_Volume_mm3)
+plot(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$WMH_Volume_mm3)
 
-mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-reg <- lm(WMH_Adjust ~  FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data = data)
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$WMH_Adjust)
+mdl3 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+mdl33 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$WMH_Volume_mm3)
+plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$WMH_Volume_mm3)
+
+mdl4 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+mdl44 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+reg <- lm(WMH_Volume_mm3 ~  FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data = data)
+plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$WMH_Volume_mm3)
 abline(reg, col = 'blue')
 
-plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$WMH_Adjust)
+plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$WMH_Volume_mm3)
 
-mdl5 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-mdl55 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+mdl5 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+mdl55 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
 
-mdl6 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
-mdl66 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$WMH_Adjust, method = "pearson", use = "complete.obs")
+mdl6 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
+mdl66 <- pcor.test(complete_data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, complete_data$WMH_Volume_mm3, complete_data$Total_Brain_Volume_mm3, method = "pearson");
 
 #P ADJUST ######################################################################
 
