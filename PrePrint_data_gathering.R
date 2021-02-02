@@ -17,11 +17,49 @@ data <- data[!is.na(data$FaceNames_GoodCoverage),]
 data$PiB_Median_Split <- NA
 data$Sex[data$Sex == "NaN"] <- NA
 PiB_Median = median(data$PiB_SUVR_GTM_FS_Global, na.rm = 'True');
-#data$WMH_Adjust <- data$WMH_Volume_mm3/data$Total_Brain_Volume_mm3;
+Pred_STRCW <- (data$STRCOL*data$STRWRD) / (data$STRCOL+data$STRWRD)
+data$STRINTERFERENCE <- data$STRCW - Pred_STRCW
+data$LETTER_FLUENCY <- (data$FLUENA + data$FLUENF+ data$FLUENS) / 3
+data$WREC_TOT <- (data$WREC + data$WREC2 + data$WREC3)
 
 # PiB Median Split ###############################################################
 data$PiB_Median_Split[which(data$PiB_SUVR_GTM_FS_Global > PiB_Median)] <- "high_PiB"
 data$PiB_Median_Split[which(data$PiB_SUVR_GTM_FS_Global <= PiB_Median)] <- "low_PiB"
+
+# Cognitive Domain Scores ##########################################################
+
+# Cognitive Domain - Z Transform 
+#Negative z value means that lower value = higher performance
+# doi:10.1016/j.jalz.2017.12.003 - method of composite calculation
+#doi/ 10.1136/jnnp.2004.045567 - standard deviations from normative data
+CLOCKD_Z <- (data$CLOCKD - mean(data$CLOCKD, na.rm = TRUE)) / sd(data$CLOCKD, na.rm = TRUE)
+BLOCKDES_Z <- (data$BLOCKDES - mean(data$BLOCKDES, na.rm = TRUE)) / sd(data$BLOCKDES, na.rm = TRUE)
+BNT60TOT_Z <- (data$BNT60TOT - mean(data$BNT60TOT, na.rm = TRUE)) / sd(data$BNT60TOT, na.rm = TRUE)
+REYCO_Z <- (data$REYCO - mean(data$REYCO, na.rm = TRUE)) / sd (data$REYCO, na.rm = TRUE)
+REYIM_Z <- (data$REYIM-mean(data$REYIM, na.rm = TRUE)) / sd(data$REYIM, na.rm = TRUE)
+REYDE_Z <- (data$REYDE - mean(data$REYDE, na.rm = TRUE)) / sd(data$REYDE, na.rm = TRUE)
+FLUEN_Z <- (data$FLUEN - mean(data$FLUEN, na.rm = TRUE)) / sd(data$FLUEN, na.rm = TRUE)
+LETTER_FLUENCY_Z <- (data$LETTER_FLUENCY - mean(data$LETTER_FLUENCY, na.rm = TRUE)) / sd(data$LETTER_FLUENCY, na.rm=TRUE)
+WREC_TOT_Z <- (data$WREC_TOT - mean(data$WREC_TOT, na.rm = TRUE)) / sd(data$WREC_TOT, na.rm =TRUE)
+WRECDE_Z <- (data$WRECDE - mean(data$WRECDE, na.rm = TRUE)) / sd(data$WRECDE, na.rm = TRUE)
+SPANSF_Z <- (data$SPANSF - mean(data$SPANSF, na.rm = TRUE)) / sd(data$SPANSF, na.rm = TRUE)
+SPANSB_Z <- (data$SPANSB - mean(data$SPANSB, na.rm = TRUE)) / sd(data$SPANSB, na.rm = TRUE)
+TRAILAS_Z <- (data$TRAILAS - mean(data$TRAILAS, na.rm = TRUE)) / sd(data$TRAILAS, na.rm = TRUE)
+TRAILBS_Z <- (data$TRAILBS - mean(data$TRAILBS, na.rm = TRUE)) / sd(data$TRAILBS, na.rm= TRUE)
+LMIAIMM_Z <- (data$LMIAIMM - mean(data$LMIAIMM, na.rm = TRUE)) /sd(data$LMIAIMM, na.rm = TRUE)
+LMIIADEL_Z <- (data$LMIIADEL - mean(data$LMIIADEL, na.rm = TRUE))/sd(data$LMIIADEL, na.rm = TRUE)
+DIGSYMWR_Z <- (data$DIGSYMWR - mean(data$DIGSYMWR, na.rm = TRUE))/sd(data$DIGSYMWR, na.rm = TRUE)
+STRINTERFERENCE_Z <- (data$STRINTERFERENCE - mean(data$STRINTERFERENCE, na.rm = TRUE))/ sd(data$STRINTERFERENCE, na.rm = TRUE)
+TRAILAS_Z_INV <- -1 * TRAILAS_Z
+TRAILBS_Z_INV <- -1 * TRAILBS_Z
+# Domain Scores #########################################################################
+#doi:10.1016/j.jalz.2017.12.003., doi:10.1080/13607860903071014. (Both Beth Snitz articles), https://www.ncbi.nlm.nih.gov/books/NBK285344/ - for SPANSB in Executive
+data$memory_learning <- (LMIAIMM_Z + REYIM_Z + WREC_TOT_Z) / 3
+data$memory_retrieval <- (LMIIADEL_Z + REYDE_Z + WRECDE_Z) / 3
+data$visuospatial <- (BLOCKDES_Z + REYCO_Z) / 2
+data$language <- (FLUEN_Z + LETTER_FLUENCY_Z + BNT60TOT_Z) / 3
+data$executive_attention <- (TRAILAS_Z_INV + TRAILBS_Z_INV + CLOCKD_Z + DIGSYMWR_Z + STRINTERFERENCE_Z + SPANSF_Z + SPANSB_Z) / 7
+
 
 #Function for p test from linear model ###########################################
 lmp <- function (modelobject) {
@@ -31,6 +69,148 @@ lmp <- function (modelobject) {
   attributes(p) <- NULL
   return(p)
 }
+
+# Memory_Learning Cognitive Domain Scores and Asymmetry ##################################################################
+mdl1 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+mdl11 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+
+mdl2 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+mdl22 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+
+mdl3 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+mdl33 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+
+mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+
+mdl5 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+mdl55 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+
+mdl6 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+mdl66 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$memory_learning, method = "pearson", use = "complete.obs")
+
+#P ADJUST ######################################################################
+
+asy_mem_learn_p<- c(mdl1$p.value, mdl2$p.value, mdl3$p.value, mdl4$p.value, mdl5$p.value, mdl6$p.value)
+absasy_mem_learn_p <- c(mdl11$p.value, mdl22$p.value, mdl33$p.value, mdl44$p.value, mdl55$p.value, mdl66$p.value)
+asy_mem_learn_c <- c(mdl1$estimate, mdl2$estimate, mdl3$estimate, mdl4$estimate, mdl5$estimate, mdl6$estimate)
+absasy_mem_learn_c <- c(mdl11$estimate, mdl22$estimate, mdl33$estimate, mdl44$estimate, mdl55$estimate, mdl66$estimate)
+asy_mem_learn_adjust_p <- p.adjust(asy_mem_learn_p, method = 'fdr')
+absasy_mem_learn_adjust_p <- p.adjust(absasy_mem_learn_p, method = 'fdr')
+
+# Memory_Retrieval Cognitive Domain Scores and Asymmetry ##################################################################
+mdl1 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+mdl11 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+
+mdl2 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+mdl22 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+
+mdl3 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+mdl33 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+
+mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR,data$memory_retrieval, method = "pearson", use = "complete.obs")
+mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+
+mdl5 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+mdl55 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+
+mdl6 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+mdl66 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$memory_retrieval, method = "pearson", use = "complete.obs")
+
+#P ADJUST ######################################################################
+
+asy_mem_retrieval_p<- c(mdl1$p.value, mdl2$p.value, mdl3$p.value, mdl4$p.value, mdl5$p.value, mdl6$p.value)
+absasy_mem_retrieval_p <- c(mdl11$p.value, mdl22$p.value, mdl33$p.value, mdl44$p.value, mdl55$p.value, mdl66$p.value)
+asy_mem_retrieval_c <- c(mdl1$estimate, mdl2$estimate, mdl3$estimate, mdl4$estimate, mdl5$estimate, mdl6$estimate)
+absasy_mem_retrieval_c <- c(mdl11$estimate, mdl22$estimate, mdl33$estimate, mdl44$estimate, mdl55$estimate, mdl66$estimate)
+asy_mem_retrieval_adjust_p <- p.adjust(asy_mem_retrieval_p, method = 'fdr')
+absasy_mem_retrieval_adjust_p <- p.adjust(absasy_mem_retrieval_p, method = 'fdr')
+
+# Visuospatial and Asymmetry ##################################################################
+mdl1 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+mdl11 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+
+mdl2 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+mdl22 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+
+mdl3 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+mdl33 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+
+mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+
+mdl5 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+mdl55 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+
+mdl6 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+mdl66 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$visuospatial, method = "pearson", use = "complete.obs")
+
+#P ADJUST ######################################################################
+
+asy_visuospatial_p<- c(mdl1$p.value, mdl2$p.value, mdl3$p.value, mdl4$p.value, mdl5$p.value, mdl6$p.value)
+absasy_visuospatial_p <- c(mdl11$p.value, mdl22$p.value, mdl33$p.value, mdl44$p.value, mdl55$p.value, mdl66$p.value)
+asy_visuospatial_c <- c(mdl1$estimate, mdl2$estimate, mdl3$estimate, mdl4$estimate, mdl5$estimate, mdl6$estimate)
+absasy_visuospatial_c <- c(mdl11$estimate, mdl22$estimate, mdl33$estimate, mdl44$estimate, mdl55$estimate, mdl66$estimate)
+asy_visuospatial_adjust_p <- p.adjust(asy_visuospatial_p, method = 'fdr')
+absasy_visuospatial_adjust_p <- p.adjust(absasy_visuospatial_p, method = 'fdr')
+
+# Language Cognitive Domain Scores and Asymmetry ##################################################################
+mdl1 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+mdl11 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+
+mdl2 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+mdl22 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+
+mdl3 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+mdl33 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+
+mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+
+mdl5 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+mdl55 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+
+mdl6 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+mdl66 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$language, method = "pearson", use = "complete.obs")
+
+#P ADJUST ######################################################################
+
+asy_language_p<- c(mdl1$p.value, mdl2$p.value, mdl3$p.value, mdl4$p.value, mdl5$p.value, mdl6$p.value)
+absasy_language_p <- c(mdl11$p.value, mdl22$p.value, mdl33$p.value, mdl44$p.value, mdl55$p.value, mdl66$p.value)
+asy_language_c <- c(mdl1$estimate, mdl2$estimate, mdl3$estimate, mdl4$estimate, mdl5$estimate, mdl6$estimate)
+absasy_language_c <- c(mdl11$estimate, mdl22$estimate, mdl33$estimate, mdl44$estimate, mdl55$estimate, mdl66$estimate)
+asy_language_adjust_p <- p.adjust(asy_language_p, method = 'fdr')
+absasy_language_adjust_p <- p.adjust(absasy_language_p, method = 'fdr')
+
+# Executive_Attention Cognitive Domain Scores and Asymmetry ##################################################################
+mdl1 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+mdl11 <- cor.test(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+
+mdl2 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+mdl22 <- cor.test(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+
+mdl3 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_Asymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+mdl33 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+
+mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+
+mdl5 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+mdl55 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+
+mdl6 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+mdl66 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$executive_attention, method = "pearson", use = "complete.obs")
+
+#P ADJUST ######################################################################
+
+asy_executive_attention_p<- c(mdl1$p.value, mdl2$p.value, mdl3$p.value, mdl4$p.value, mdl5$p.value, mdl6$p.value)
+absasy_executive_attention_p <- c(mdl11$p.value, mdl22$p.value, mdl33$p.value, mdl44$p.value, mdl55$p.value, mdl66$p.value)
+asy_executive_attention_c <- c(mdl1$estimate, mdl2$estimate, mdl3$estimate, mdl4$estimate, mdl5$estimate, mdl6$estimate)
+absasy_executive_attention_c <- c(mdl11$estimate, mdl22$estimate, mdl33$estimate, mdl44$estimate, mdl55$estimate, mdl66$estimate)
+asy_executive_attention_adjust_p <- p.adjust(asy_executive_attention_p, method = 'fdr')
+absasy_executive_attention_adjust_p <- p.adjust(absasy_executive_attention_p, method = 'fdr')
+
+
 # AI WITH WMHI ################################################################
 complete_data <- data[!is.na(data$WMH_Volume_mm3),] #WMHI and Total Brain Volume variables have missing data for the same participants
 #All asymmetry columns have complete data
@@ -105,7 +285,7 @@ mdl5 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_Asymmetry_LR, 
 mdl55 <- cor.test(data$FaceNames_Pos_Novel_Control_Supp_Motor_Area_AbsAsymmetry_LR, data$FDG_SUVR_GTM_FS_Global, method = "pearson", use = "complete.obs")
 
 mdl6 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_Asymmetry_LR, data$FDG_SUVR_GTM_FS_Global, method = "pearson", use = "complete.obs")
-mdl66 <- cor.test(data$FDG_SUVR_GTM_FS_Global, data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, method = "pearson", use = "complete.obs")
+mdl66 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Med_Orb_AbsAsymmetry_LR, data$FDG_SUVR_GTM_FS_Global, method = "pearson", use = "complete.obs")
 
 #P ADJUST ######################################################################
 
@@ -333,6 +513,57 @@ absasy_education_adjust_p <- p.adjust(absasy_education_p,method = "fdr",n=length
 
 
 ## Report ##
+#Cognitive Domains
+#Memory_Learning
+asy_mem_learn_c 
+absasy_mem_learn_c
+
+asy_mem_learn_p 
+absasy_mem_learn_p 
+
+asy_mem_learn_adjust_p 
+absasy_mem_learn_adjust_p 
+
+#Memory_Retrieval
+asy_mem_retrieval_c 
+absasy_mem_retrieval_c
+
+asy_mem_retrieval_p 
+absasy_mem_retrieval_p 
+
+asy_mem_retrieval_adjust_p 
+absasy_mem_retrieval_adjust_p 
+
+#Visuospatial
+asy_visuospatial_c 
+absasy_visuospatial_c
+
+asy_visuospatial_p 
+absasy_visuospatial_p 
+
+asy_visuospatial_adjust_p 
+absasy_visuospatial_adjust_p 
+
+#Language
+asy_language_c 
+absasy_language_c
+
+asy_language_p 
+absasy_language_p 
+
+asy_language_adjust_p 
+absasy_language_adjust_p 
+
+#Executive_Attention
+asy_executive_attention_c 
+absasy_executive_attention_c
+
+asy_executive_attention_p 
+absasy_executive_attention_p 
+
+asy_executive_attention_adjust_p 
+absasy_executive_attention_adjust_p 
+
 #WMH
 asy_WMH_c 
 absasy_WMH_c
