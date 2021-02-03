@@ -640,5 +640,14 @@ absasy_education_adjust_p
 boxplot(data$FaceNames_Pos_Novel_Control_Putamen_L, data$FaceNames_Pos_Novel_Control_Putamen_R, 
         main = "Putamen Activation", col = c("blue","yellow"), 
         xlab = c("Left Putamen", "Right Putamen"), ylab("Putamen Activation"))
-        
 
+# Scatterplots ##################################################################
+
+plot(data$memory_learning, data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, main = "a. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Memory Learning", xlab = "Memory Learning Cognitive Domain", ylab = "Absolute Asymmetry in Thalamus Ventral Posterolateral");
+abline(lm(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR ~ data$memory_learning));
+
+plot(data$executive_attention, data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, main = "b. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Executive Attention", xlab = "Executive Attention Cognitive Domain", ylab = "Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus");
+abline(lm(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR ~ data$executive_attention));
+
+plot(data$visuospatial, data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, main = "c. Absolute Asymmetry in Putamen and Visuospatial", xlab = "Visuospatial Cognitive Domain", ylab = "Absolute Asymmetry in Putamen");
+abline(lm(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR ~ data$visuospatial));
