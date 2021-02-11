@@ -9,8 +9,8 @@ library('ppcor')
 # IMPORTING Data ###########################################################
 
 library("readxl")
-data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+#data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
+data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
@@ -642,6 +642,30 @@ boxplot(data$FaceNames_Pos_Novel_Control_Putamen_L, data$FaceNames_Pos_Novel_Con
         xlab = c("Left Putamen", "Right Putamen"), ylab("Putamen Activation"))
 
 # Scatterplots ##################################################################
+data$asymmetry_direction[ data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR > 0] <- 'Left'
+data$asymmetry_direction[ data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR < 0] <- 'Right'
+h <- ggplot(data = data, aes(x=memory_learning, y=FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR))
+h + geom_jitter(aes(colour = asymmetry_direction)) + 
+  geom_smooth(method = "lm", se = FALSE, color = 'black') + labs(title='a. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Memory Learning', x = 'Memory Learning Cognitive Domain', y = 'Absolute Asymmetry in Thalamus Ventral Posterolateral') +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_text(color = 'black', size = 10, face = 'bold'),
+        axis.title.y = element_text(color = 'black', size = 10, face = 'bold')) 
+
+
+h <- ggplot(data = data, aes(x=executive_attention, y=FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR))
+h + geom_jitter(aes(colour = asymmetry_direction)) + 
+  geom_smooth(method = "lm", se = FALSE, color = 'black') + labs(title='b. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Executive Attention', x = 'Executive Attention Cognitive Domain', y = 'Absolute Asymmetry in Thalamus Ventral Posterolateral') +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_text(color = 'black', size = 10, face = 'bold'),
+        axis.title.y = element_text(color = 'black', size = 10, face = 'bold')) 
+
+h <- ggplot(data = data, aes(x=visuospatial, y=FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR))
+h + geom_jitter(aes(colour = asymmetry_direction)) + 
+  geom_smooth(method = "lm", se = FALSE, color = 'black') + labs(title='c. Absolute Asymmetry in Putamen and Visuospatial', x = 'Visuospatial Cognitive Domain', y = 'Absolute Asymmetry in Putamen') +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_text(color = 'black', size = 10, face = 'bold'),
+        axis.title.y = element_text(color = 'black', size = 10, face = 'bold')) 
+
 
 plot(data$memory_learning, data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, main = "a. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Memory Learning", xlab = "Memory Learning Cognitive Domain", ylab = "Absolute Asymmetry in Thalamus Ventral Posterolateral");
 abline(lm(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR ~ data$memory_learning));
@@ -651,3 +675,4 @@ abline(lm(data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR ~ data$execu
 
 plot(data$visuospatial, data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR, main = "c. Absolute Asymmetry in Putamen and Visuospatial", xlab = "Visuospatial Cognitive Domain", ylab = "Absolute Asymmetry in Putamen");
 abline(lm(data$FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR ~ data$visuospatial));
+
