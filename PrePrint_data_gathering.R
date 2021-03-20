@@ -9,8 +9,8 @@ library('ppcor')
 # IMPORTING Data ###########################################################
 
 library("readxl")
-#data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
+#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
@@ -513,6 +513,90 @@ absasy_education_adjust_p <- p.adjust(absasy_education_p,method = "fdr",n=length
 
 
 ## Report ##
+
+#Averages with all 70 participants (only excluding poor coverage)
+#Age (mean and standard deviation)
+mean(data$Age_CurrentVisit, na.rm = TRUE)
+sd(data$Age_CurrentVisit, na.rm =TRUE)
+#Number missing age
+sum(is.na(data$Age_CurrentVisit))
+
+# % White
+sum(data$Race == "White",na.rm = TRUE)
+(sum(data$Race == "White",na.rm = TRUE)) / sum(!(data$Race=="NaN"),na.rm = TRUE) * 100
+# Number missing race data
+sum((data$Race=="NaN"))
+
+# % Male
+sum(data$Sex == "Male", na.rm = TRUE)
+sum(data$Sex == "Male", na.rm = TRUE) / sum(!is.na(data$Sex)) * 100
+# Number missing Sex data
+sum(is.na(data$Sex))
+
+# Education (Mean and St. Dev.)
+mean(data$Education, na.rm = TRUE)
+sd(data$Education, na.rm =TRUE)
+#Number missing education:
+sum(is.na(data$Education))
+
+#Global PiB
+mean(data$PiB_SUVR_GTM_FS_Global, na.rm = TRUE)
+sd(data$PiB_SUVR_GTM_FS_Global, na.rm =TRUE)
+#Number missing PiB
+sum(is.na(data$PiB_SUVR_GTM_FS_Global))
+
+#Global FDG
+mean(data$FDG_SUVR_GTM_FS_Global, na.rm = TRUE)
+sd(data$FDG_SUVR_GTM_FS_Global, na.rm =TRUE)
+#Number missing FDG
+sum(is.na(data$FDG_SUVR_GTM_FS_Global))
+
+#Global WMH Volume
+mean(data$WMH_Volume_mm3, na.rm = TRUE)
+sd(data$WMH_Volume_mm3, na.rm =TRUE)
+#Number missing WMH
+sum(is.na(data$WMH_Volume_mm3))
+
+#Post-Scan Accuracy
+mean(as.numeric(data$FaceName_PostScanAccuracy), na.rm = TRUE)
+sd(as.numeric(data$FaceName_PostScanAccuracy), na.rm =TRUE)
+#Number missing post-scan accuracy
+sum(data$FaceName_PostScanAccuracy == "NA")
+
+# Cognitive Domains
+#Memory Learning
+mean(data$memory_learning, na.rm = TRUE)
+sd(data$memory_learning, na.rm =TRUE)
+#Number missing memory learning
+sum(is.na(data$memory_learning))
+
+# Memory Retrieval
+mean(data$memory_retrieval, na.rm = TRUE)
+sd(data$memory_retrieval, na.rm =TRUE)
+# Number missing memory_retrieval
+sum(is.na(data$memory_retrieval))
+
+# Visuospatial
+mean(data$visuospatial, na.rm = TRUE)
+sd(data$visuospatial, na.rm =TRUE)
+# Number missing visuospatial
+sum(is.na(data$visuospatial))
+
+# Language
+mean(data$language, na.rm = TRUE)
+sd(data$language, na.rm =TRUE)
+#Number missing language
+sum(is.na(data$language))
+
+#Executive Attention
+mean(data$executive_attention, na.rm = TRUE)
+sd(data$executive_attention, na.rm =TRUE)
+#Number missing executive attention
+sum(is.na(data$executive_attention))
+
+
+#ASSOCIATIONS
+
 #Cognitive Domains
 #Memory_Learning
 asy_mem_learn_c 
@@ -646,27 +730,27 @@ data$asymmetry_direction[ data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR
 data$asymmetry_direction[ data$FaceNames_Pos_Novel_Control_Thal_VPL_Asymmetry_LR < 0] <- 'Right'
 h <- ggplot(data = data, aes(x=memory_learning, y=FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR))
 h + geom_jitter(aes(colour = asymmetry_direction)) + 
-  geom_smooth(method = "lm", se = FALSE, color = 'black') + labs(title='a. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Memory Learning', x = 'Memory Learning Cognitive Domain', y = 'Absolute Asymmetry in Thalamus Ventral Posterolateral') +
-  theme(plot.title = element_text(hjust = 0.5),
-        axis.title.x = element_text(color = 'black', size = 10, face = 'bold'),
-        axis.title.y = element_text(color = 'black', size = 10, face = 'bold')) 
+  geom_smooth(method = "lm", se = FALSE, color = 'black')+labs(title='b. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Memory Learning', x = 'Memory Learning Cognitive Domain', y = 'Absolute Asymmetry in Thalamus Ventral Posterolateral') +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none",
+        axis.title.x = element_text(color = 'black', size = 12, face = 'bold'),
+        axis.title.y = element_text(color = 'black', size = 12, face = 'bold')) 
 
 
 h <- ggplot(data = data, aes(x=executive_attention, y=FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR))
 h + geom_jitter(aes(colour = asymmetry_direction)) + 
   geom_smooth(method = "lm", se = FALSE, color = 'black') + labs(title='b. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Executive Attention', x = 'Executive Attention Cognitive Domain', y = 'Absolute Asymmetry in Thalamus Ventral Posterolateral') +
-  theme(plot.title = element_text(hjust = 0.5),
-        axis.title.x = element_text(color = 'black', size = 10, face = 'bold'),
-        axis.title.y = element_text(color = 'black', size = 10, face = 'bold')) 
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none",
+        axis.title.x = element_text(color = 'black', size = 12, face = 'bold'),
+        axis.title.y = element_text(color = 'black', size = 12, face = 'bold')) 
 
 data$asymmetry_direction[ data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR > 0] <- 'Left'
 data$asymmetry_direction[ data$FaceNames_Pos_Novel_Control_Putamen_Asymmetry_LR < 0] <- 'Right'
 h <- ggplot(data = data, aes(x=visuospatial, y=FaceNames_Pos_Novel_Control_Putamen_AbsAsymmetry_LR))
 h + geom_jitter(aes(colour = asymmetry_direction)) + 
-  geom_smooth(method = "lm", se = FALSE, color = 'black') + labs(title='c. Absolute Asymmetry in Putamen and Visuospatial', x = 'Visuospatial Cognitive Domain', y = 'Absolute Asymmetry in Putamen') +
+  geom_smooth(method = "lm", se = FALSE, color = 'black') + labs(title='a. Absolute Asymmetry in Putamen and Visuospatial', x = 'Visuospatial Cognitive Domain', y = 'Absolute Asymmetry in Putamen') +
   theme(plot.title = element_text(hjust = 0.5),
-        axis.title.x = element_text(color = 'black', size = 10, face = 'bold'),
-        axis.title.y = element_text(color = 'black', size = 10, face = 'bold')) 
+        axis.title.x = element_text(color = 'black', size = 12, face = 'bold'),
+        axis.title.y = element_text(color = 'black', size = 12, face = 'bold')) 
 
 
 plot(data$memory_learning, data$FaceNames_Pos_Novel_Control_Thal_VPL_AbsAsymmetry_LR, main = "a. Absolute Asymmetry in Thalamus Ventral Posterolateral Nucleus and Memory Learning", xlab = "Memory Learning Cognitive Domain", ylab = "Absolute Asymmetry in Thalamus Ventral Posterolateral");
