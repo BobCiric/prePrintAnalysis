@@ -9,8 +9,8 @@ library('ppcor')
 # IMPORTING Data ###########################################################
 
 library("readxl")
-#data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
+#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
@@ -792,14 +792,41 @@ sd(data$Age_CurrentVisit[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
 mean(data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
 sd(data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
 t.test(data$Age_CurrentVisit[data$PiB_Median_Split == 'high_PiB'], data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'])
+#In total population
+mean(data$Age_CurrentVisit,na.rm = TRUE);
+sd(data$Age_CurrentVisit, na.rm = TRUE);
+#Number Missing
+sum(is.na(data$Age_CurrentVisit))
 
+#Sex
 #Chi square Sex
 SexTable <- table(data$Sex, data$PiB_Median_Split)
 chisq.test(SexTable)
+#Percent and Number Male (in PiB Split)
+sum(data$Sex[data$PiB_Median_Split == 'high_PiB'] == "Male",na.rm = TRUE)
+sum(data$Sex[data$PiB_Median_Split == 'high_PiB'] == "Male", na.rm = TRUE) / sum(!(is.na(data$Sex[data$PiB_Median_Split == 'high_PiB'])))
+sum(data$Sex[data$PiB_Median_Split == 'low_PiB'] == "Male", na.rm = TRUE)
+sum(data$Sex[data$PiB_Median_Split == 'low_PiB'] == "Male", na.rm = TRUE) / sum(!(is.na(data$Sex[data$PiB_Median_Split == 'low_PiB'])))
+#Number/Percent Male in entire sample:
+sum(data$Sex == "Male",na.rm = TRUE)
+sum(data$Sex == "Male", na.rm = TRUE) / sum(!(is.na(data$Sex)))
+#Number Missing
+sum(is.na(data$Sex))
 
+#Race
 #Chi square Race
 RaceTable <- table(data$Race, data$PiB_Median_Split)
 chisq.test(RaceTable)
+#Percent and Number White (in PiB Split)
+sum(data$Race[data$PiB_Median_Split == 'high_PiB'] == "White",na.rm = TRUE)
+sum(data$Race[data$PiB_Median_Split == 'high_PiB'] == "White", na.rm = TRUE) / sum(!(is.na(data$Race[data$PiB_Median_Split == 'high_PiB'])))
+sum(data$Race[data$PiB_Median_Split == 'low_PiB'] == "White", na.rm = TRUE)
+sum(data$Race[data$PiB_Median_Split == 'low_PiB'] == "White", na.rm = TRUE) / sum(!(is.na(data$Race[data$PiB_Median_Split == 'low_PiB'])))
+#Number/Percent White in entire sample:
+sum(data$Race == "White",na.rm = TRUE)
+sum(data$Race == "White", na.rm = TRUE) / sum(!(is.na(data$Sex)))
+#Number Missing:
+sum(data$Race=="NaN")
 
 #Education
 mean(data$Education[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
@@ -809,6 +836,11 @@ sd(data$Education[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
 
 t.test(data$Education[data$PiB_Median_Split == 'low_PiB'], data$Education[data$PiB_Median_Split == 'high_PiB'])
 
+mean(data$Education, na.rm= TRUE)
+sd(data$Education, na.rm= TRUE)
+#Number Missing:
+sum(is.na(data$Education))
+
 #Global PiB
 mean(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
 sd(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
@@ -817,6 +849,11 @@ sd(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
 
 t.test(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'])
 
+mean(data$PiB_SUVR_GTM_FS_Global, na.rm= TRUE)
+sd(data$PiB_SUVR_GTM_FS_Global, na.rm= TRUE)
+#Number Missing
+sum(is.na(data$PiB_SUVR_GTM_FS_Global))
+
 #FDG
 mean(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
 sd(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
@@ -824,6 +861,11 @@ mean(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], na.rm= TRU
 sd(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
 
 t.test(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'])
+
+mean(data$FDG_SUVR_GTM_FS_Global, na.rm= TRUE)
+sd(data$FDG_SUVR_GTM_FS_Global, na.rm= TRUE)
+#Number Missing:
+sum(is.na(data$FDG_SUVR_GTM_FS_Global))
 
 #WMHI
 mean(data$FS_WM_hypointensities[data$PiB_Median_Split == 'high_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
@@ -835,6 +877,11 @@ sd(data$FS_WM_hypointensities[data$PiB_Median_Split == 'low_PiB']/data$WMH_Volum
 t.test(data$FS_WM_hypointensities[data$PiB_Median_Split == 'low_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'low_PiB'], 
        data$FS_WM_hypointensities[data$PiB_Median_Split == 'high_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'high_PiB'])
 
+mean(data$FS_WM_hypointensities/data$WMH_Volume_mm3, na.rm= TRUE)
+sd(data$FS_WM_hypointensities/data$WMH_Volume_mm3, na.rm= TRUE)
+#Number Missing:
+sum(is.na(data$FS_WM_hypointensities/data$WMH_Volume_mm3))
+
 #Post Scan Accuracy 
 mean(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'high_PiB']), na.rm= TRUE)
 sd(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'high_PiB']), na.rm= TRUE)
@@ -844,24 +891,39 @@ sd(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'low_PiB']
 t.test(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'low_PiB']), 
        as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'high_PiB']))
 
+mean(as.numeric(data$FaceName_PostScanAccuracy), na.rm= TRUE)
+sd(as.numeric(data$FaceName_PostScanAccuracy), na.rm= TRUE)
+#Number Missing:
+sum(is.na(data$FaceName_PostScanAccuracy))
+
 #cognitive domains
 #memory learning
 t.test(data$memory_learning[data$PiB_Median_Split == 'low_PiB'], 
        data$memory_learning[data$PiB_Median_Split == 'high_PiB'])
+#Number missing:
+sum(is.na(data$memory_learning))
 
 #memory retrieval
 t.test(data$memory_retrieval[data$PiB_Median_Split == 'high_PiB'], 
        data$memory_retrieval[data$PiB_Median_Split == 'low_PiB'])
+#Number missing:
+sum(is.na(data$memory_retrieval))
 
 #visuospatial
 t.test(data$visuospatial[data$PiB_Median_Split == 'low_PiB'], 
        data$visuospatial[data$PiB_Median_Split == 'high_PiB'])
+#Number missing
+sum(is.na(data$visuospatial))
 
 #language
 t.test(data$language[data$PiB_Median_Split == 'low_PiB'], 
        data$language[data$PiB_Median_Split == 'high_PiB'])
+#Number missing
+sum(is.na(data$language))
 
 #executive attention
 t.test(data$executive_attention[data$PiB_Median_Split == 'low_PiB'], 
        data$executive_attention[data$PiB_Median_Split == 'high_PiB'])
+#Number missing
+sum(is.na(data$executive_attention))
 
