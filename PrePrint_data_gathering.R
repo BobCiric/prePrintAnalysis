@@ -9,8 +9,8 @@ library('ppcor')
 # IMPORTING Data ###########################################################
 
 library("readxl")
-data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+#data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
+data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
@@ -551,9 +551,9 @@ sd(data$FDG_SUVR_GTM_FS_Global, na.rm =TRUE)
 #Number missing FDG
 sum(is.na(data$FDG_SUVR_GTM_FS_Global))
 
-#Global WMH Volume
-mean(data$WMH_Volume_mm3, na.rm = TRUE)
-sd(data$WMH_Volume_mm3, na.rm =TRUE)
+#Global WMH adjusted for Volume
+mean(data$FS_WM_hypointensities/data$WMH_Volume_mm3, na.rm = TRUE)
+sd(data$FS_WM_hypointensities/data$WMH_Volume_mm3, na.rm =TRUE)
 #Number missing WMH
 sum(is.na(data$WMH_Volume_mm3))
 
@@ -561,7 +561,7 @@ sum(is.na(data$WMH_Volume_mm3))
 mean(as.numeric(data$FaceName_PostScanAccuracy), na.rm = TRUE)
 sd(as.numeric(data$FaceName_PostScanAccuracy), na.rm =TRUE)
 #Number missing post-scan accuracy
-sum(data$FaceName_PostScanAccuracy == "NA")
+sum(is.na(data$FaceName_PostScanAccuracy))
 
 # Cognitive Domains
 #Memory Learning
@@ -784,4 +784,95 @@ h + geom_jitter(aes(colour = asymmetry_direction)) +
   theme(plot.title = element_text(hjust = 0.5),
         axis.title.x = element_text(color = 'black', size = 10, face = 'bold'),
         axis.title.y = element_text(color = 'black', size = 10, face = 'bold')) 
+
+## Demographics excluded #N
+87 - length(data$FaceNames_GoodCoverage)
+87 - length(na.omit(data$Age_CurrentVisit)) 
+87 - length(na.omit(data$Sex))
+87 - length(na.omit(data$Race))
+87 - length(na.omit(data$Education))
+87 - length(na.omit(data$PiB_SUVR_GTM_FS_Global))
+87 - length(na.omit(data$FDG_SUVR_GTM_FS_Global))
+87 - length(na.omit(data$WMH_Volume_mm3))
+87 - length(na.omit(data$FaceName_PostScanAccuracy))
+
+## Demographics data
+#Age
+mean(data$Age_CurrentVisit[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$Age_CurrentVisit[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+t.test(data$Age_CurrentVisit[data$PiB_Median_Split == 'high_PiB'], data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'])
+
+#Chi square Race
+RaceTable <- table(data$Race, data$PiB_Median_Split)
+chisq.test(RaceTable)
+
+#Chi square Sex
+SexTable <- table(data$Sex, data$PiB_Median_Split)
+chisq.test(SexTable)
+
+#Education
+mean(data$Education[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$Education[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$Education[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$Education[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
+t.test(data$Education[data$PiB_Median_Split == 'low_PiB'], data$Education[data$PiB_Median_Split == 'high_PiB'])
+
+#Global PiB
+mean(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
+t.test(data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], data$PiB_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'])
+
+#FDG
+mean(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
+t.test(data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'low_PiB'], data$FDG_SUVR_GTM_FS_Global[data$PiB_Median_Split == 'high_PiB'])
+
+#WMHI
+mean(data$FS_WM_hypointensities[data$PiB_Median_Split == 'high_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$FS_WM_hypointensities[data$PiB_Median_Split == 'high_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+
+mean(data$FS_WM_hypointensities[data$PiB_Median_Split == 'low_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$FS_WM_hypointensities[data$PiB_Median_Split == 'low_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
+t.test(data$FS_WM_hypointensities[data$PiB_Median_Split == 'low_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'low_PiB'], 
+       data$FS_WM_hypointensities[data$PiB_Median_Split == 'high_PiB']/data$WMH_Volume_mm3[data$PiB_Median_Split == 'high_PiB'])
+
+#Post Scan Accuracy 
+mean(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'high_PiB']), na.rm= TRUE)
+sd(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'high_PiB']), na.rm= TRUE)
+mean(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'low_PiB']), na.rm= TRUE)
+sd(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'low_PiB']), na.rm= TRUE)
+
+t.test(as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'low_PiB']), 
+       as.numeric(data$FaceName_PostScanAccuracy[data$PiB_Median_Split == 'high_PiB']))
+
+#cognitive domains
+#memory learning
+t.test(data$memory_learning[data$PiB_Median_Split == 'low_PiB'], 
+       data$memory_learning[data$PiB_Median_Split == 'high_PiB'])
+
+#memory retrieval
+t.test(data$memory_retrieval[data$PiB_Median_Split == 'low_PiB'], 
+       data$memory_retrieval[data$PiB_Median_Split == 'high_PiB'])
+
+#visuospatial
+t.test(data$visuospatial[data$PiB_Median_Split == 'low_PiB'], 
+       data$visuospatial[data$PiB_Median_Split == 'high_PiB'])
+
+#language
+t.test(data$language[data$PiB_Median_Split == 'low_PiB'], 
+       data$language[data$PiB_Median_Split == 'high_PiB'])
+
+#executive attention
+t.test(data$executive_attention[data$PiB_Median_Split == 'low_PiB'], 
+       data$executive_attention[data$PiB_Median_Split == 'high_PiB'])
 
