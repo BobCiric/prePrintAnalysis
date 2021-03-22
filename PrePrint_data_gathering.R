@@ -785,17 +785,6 @@ h + geom_jitter(aes(colour = asymmetry_direction)) +
         axis.title.x = element_text(color = 'black', size = 10, face = 'bold'),
         axis.title.y = element_text(color = 'black', size = 10, face = 'bold')) 
 
-## Demographics excluded #N
-87 - length(data$FaceNames_GoodCoverage)
-87 - length(na.omit(data$Age_CurrentVisit)) 
-87 - length(na.omit(data$Sex))
-87 - length(na.omit(data$Race))
-87 - length(na.omit(data$Education))
-87 - length(na.omit(data$PiB_SUVR_GTM_FS_Global))
-87 - length(na.omit(data$FDG_SUVR_GTM_FS_Global))
-87 - length(na.omit(data$WMH_Volume_mm3))
-87 - length(na.omit(data$FaceName_PostScanAccuracy))
-
 ## Demographics data
 #Age
 mean(data$Age_CurrentVisit[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
@@ -804,13 +793,13 @@ mean(data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
 sd(data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
 t.test(data$Age_CurrentVisit[data$PiB_Median_Split == 'high_PiB'], data$Age_CurrentVisit[data$PiB_Median_Split == 'low_PiB'])
 
-#Chi square Race
-RaceTable <- table(data$Race, data$PiB_Median_Split)
-chisq.test(RaceTable)
-
 #Chi square Sex
 SexTable <- table(data$Sex, data$PiB_Median_Split)
 chisq.test(SexTable)
+
+#Chi square Race
+RaceTable <- table(data$Race, data$PiB_Median_Split)
+chisq.test(RaceTable)
 
 #Education
 mean(data$Education[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
@@ -861,8 +850,8 @@ t.test(data$memory_learning[data$PiB_Median_Split == 'low_PiB'],
        data$memory_learning[data$PiB_Median_Split == 'high_PiB'])
 
 #memory retrieval
-t.test(data$memory_retrieval[data$PiB_Median_Split == 'low_PiB'], 
-       data$memory_retrieval[data$PiB_Median_Split == 'high_PiB'])
+t.test(data$memory_retrieval[data$PiB_Median_Split == 'high_PiB'], 
+       data$memory_retrieval[data$PiB_Median_Split == 'low_PiB'])
 
 #visuospatial
 t.test(data$visuospatial[data$PiB_Median_Split == 'low_PiB'], 
