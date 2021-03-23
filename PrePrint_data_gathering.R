@@ -927,3 +927,204 @@ t.test(data$executive_attention[data$PiB_Median_Split == 'low_PiB'],
 #Number missing
 sum(is.na(data$executive_attention))
 
+## Individual Tests ####
+#Clock Design
+mean(data$CLOCKD, na.rm = TRUE)
+sd(data$CLOCKD, na.rm = TRUE)
+mean(data$CLOCKD[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$CLOCKD[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$CLOCKD[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$CLOCKD[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$CLOCKD[data$PiB_Median_Split == 'low_PiB'], 
+       data$CLOCKD[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$CLOCKD))
+
+#Block Design
+mean(data$BLOCKDES, na.rm = TRUE)
+sd(data$BLOCKDES, na.rm = TRUE)
+mean(data$BLOCKDES[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$BLOCKDES[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$BLOCKDES[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$BLOCKDES[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$BLOCKDES[data$PiB_Median_Split == 'low_PiB'], 
+       data$BLOCKDES[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$BLOCKDES))
+
+#60-item Boston Naming Test
+mean(data$BNT60TOT, na.rm = TRUE)
+sd(data$BNT60TOT, na.rm = TRUE)
+mean(data$BNT60TOT[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$BNT60TOT[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$BNT60TOT[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$BNT60TOT[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$BNT60TOT[data$PiB_Median_Split == 'low_PiB'], 
+       data$BNT60TOT[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$BNT60TOT))
+
+#Rey-Osterreith Figure Copy
+mean(data$REYCO, na.rm = TRUE)
+sd(data$REYCO, na.rm = TRUE)
+mean(data$REYCO[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$REYCO[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$REYCO[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$REYCO[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$REYCO[data$PiB_Median_Split == 'low_PiB'], 
+       data$REYCO[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$REYCO))
+
+#Rey-Osterreith Figure Immediate
+mean(data$REYIM, na.rm = TRUE)
+sd(data$REYIM, na.rm = TRUE)
+mean(data$REYIM[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$REYIM[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$REYIM[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$REYIM[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$REYIM[data$PiB_Median_Split == 'low_PiB'], 
+       data$REYIM[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$REYIM))
+
+#Rey-Osterreith Figure Delayed
+mean(data$REYDE, na.rm = TRUE)
+sd(data$REYDE, na.rm = TRUE)
+mean(data$REYDE[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$REYDE[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$REYDE[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$REYDE[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$REYDE[data$PiB_Median_Split == 'low_PiB'], 
+       data$REYDE[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$REYDE))
+
+#Animal Fluency
+mean(data$FLUEN, na.rm = TRUE)
+sd(data$FLUEN, na.rm = TRUE)
+mean(data$FLUEN[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$FLUEN[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$FLUEN[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$FLUEN[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$FLUEN[data$PiB_Median_Split == 'low_PiB'], 
+       data$FLUEN[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$FLUEN))
+
+#Letter Fluency
+mean(data$LETTER_FLUENCY, na.rm = TRUE)
+sd(data$LETTER_FLUENCY, na.rm = TRUE)
+mean(data$LETTER_FLUENCY[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$LETTER_FLUENCY[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$LETTER_FLUENCY[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$LETTER_FLUENCY[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$LETTER_FLUENCY[data$PiB_Median_Split == 'low_PiB'], 
+       data$LETTER_FLUENCY[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$LETTER_FLUENCY))
+
+#ADRC Word List Immediate
+mean(data$WREC_TOT, na.rm = TRUE)
+sd(data$WREC_TOT, na.rm = TRUE)
+mean(data$WREC_TOT[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$WREC_TOT[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$WREC_TOT[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$WREC_TOT[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$WREC_TOT[data$PiB_Median_Split == 'low_PiB'], 
+       data$WREC_TOT[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$WREC_TOT))
+
+#ADRC Word List Delayed
+mean(data$WRECDE, na.rm = TRUE)
+sd(data$WRECDE, na.rm = TRUE)
+mean(data$WRECDE[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$WRECDE[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$WRECDE[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$WRECDE[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$WRECDE[data$PiB_Median_Split == 'low_PiB'], 
+       data$WRECDE[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$WRECDE))
+
+#Digit Span Forward
+mean(data$SPANSF, na.rm = TRUE)
+sd(data$SPANSF, na.rm = TRUE)
+mean(data$SPANSF[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$SPANSF[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$SPANSF[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$SPANSF[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$SPANSF[data$PiB_Median_Split == 'low_PiB'], 
+       data$SPANSF[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$SPANSF))
+
+#Digit Span Backward
+mean(data$SPANSB, na.rm = TRUE)
+sd(data$SPANSB, na.rm = TRUE)
+mean(data$SPANSB[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$SPANSB[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$SPANSB[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$SPANSB[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+
+t.test(data$SPANSB[data$PiB_Median_Split == 'low_PiB'], 
+       data$SPANSB[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$SPANSB))
+
+#Trail MAking Test A
+mean(data$TRAILAS, na.rm = TRUE)
+sd(data$TRAILAS, na.rm = TRUE)
+mean(data$TRAILAS[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$TRAILAS[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$TRAILAS[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$TRAILAS[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$TRAILAS[data$PiB_Median_Split == 'low_PiB'], 
+       data$TRAILAS[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$TRAILAS))
+
+#Trail Making Test B
+mean(data$TRAILBS, na.rm = TRUE)
+sd(data$TRAILBS, na.rm = TRUE)
+mean(data$TRAILBS[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$TRAILBS[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$TRAILBS[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$TRAILBS[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$TRAILBS[data$PiB_Median_Split == 'low_PiB'], 
+       data$TRAILBS[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$TRAILBS))
+
+#Logical Memory Immediate
+mean(data$LMIAIMM, na.rm = TRUE)
+sd(data$LMIAIMM, na.rm = TRUE)
+mean(data$LMIAIMM[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$LMIAIMM[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$LMIAIMM[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$LMIAIMM[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$LMIAIMM[data$PiB_Median_Split == 'low_PiB'], 
+       data$LMIAIMM[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$LMIAIMM))
+
+#Logical Memory Delayed
+mean(data$LMIIADEL, na.rm = TRUE)
+sd(data$LMIIADEL, na.rm = TRUE)
+mean(data$LMIIADEL[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$LMIIADEL[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$LMIIADEL[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$LMIIADEL[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$LMIIADEL[data$PiB_Median_Split == 'low_PiB'], 
+       data$LMIIADEL[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$LMIIADEL))
+
+#Digit Symbol Substitution
+mean(data$DIGSYMWR, na.rm = TRUE)
+sd(data$DIGSYMWR, na.rm = TRUE)
+mean(data$DIGSYMWR[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$DIGSYMWR[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$DIGSYMWR[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$DIGSYMWR[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$DIGSYMWR[data$PiB_Median_Split == 'low_PiB'], 
+       data$DIGSYMWR[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$DIGSYMWR))
+
+#Stroop Interference
+mean(data$STRINTERFERENCE, na.rm = TRUE)
+sd(data$STRINTERFERENCE, na.rm = TRUE)
+mean(data$STRINTERFERENCE[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+sd(data$STRINTERFERENCE[data$PiB_Median_Split == 'high_PiB'], na.rm = TRUE)
+mean(data$STRINTERFERENCE[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+sd(data$STRINTERFERENCE[data$PiB_Median_Split == 'low_PiB'], na.rm = TRUE)
+t.test(data$STRINTERFERENCE[data$PiB_Median_Split == 'low_PiB'], 
+       data$STRINTERFERENCE[data$PiB_Median_Split == 'high_PiB'])
+sum(is.na(data$STRINTERFERENCE))
+
+
