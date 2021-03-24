@@ -9,8 +9,8 @@ library('ppcor')
 # IMPORTING Data ###########################################################
 
 library("readxl")
-data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+#data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
+data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
@@ -276,6 +276,9 @@ plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$F
 mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$FDG_SUVR_GTM_FS_Global, method = "pearson", use = "complete.obs")
 mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$FDG_SUVR_GTM_FS_Global, method = "pearson", use = "complete.obs")
 reg <- lm( FDG_SUVR_GTM_FS_Global ~  FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data = data)
+h <- ggplot(data, aes(x = FDG_SUVR_GTM_FS_Global, y =FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR )) + geom_point()
+h + labs(x = 'Global Cerebral Metabolism (FDG PET SUVR, a.u.)', y = 'Middle Frontal Gyrus Asymmetry (a.u.)') + geom_smooth(method=lm, se = FALSE, color = 'black')
+
 plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$FDG_SUVR_GTM_FS_Global)
 abline(reg, col = 'blue')
 
