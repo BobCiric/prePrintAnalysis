@@ -6,8 +6,8 @@ pacman::p_load(pacman, rio)
 library("ggpubr")
 
 # IMPORTING Data ###########################################################
-data <- import("~/Desktop/GPN/KLU_APC2_Master_2020_12_16.xlsx")
-#data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_09_18.xlsx")
+#data <- import("~/Desktop/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+data <- import("/Users/jinghangli/Documents/R/KLU_APC2_Master_2021_04_08.xlsx")
 data <- data[is.na(data$FaceNames_Exclude), ] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1, ] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage), ] # Comment out for longitudinal studies
