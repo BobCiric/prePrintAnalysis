@@ -10,7 +10,7 @@ library('ppcor')
 
 library("readxl")
 #data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-data <- import("/Users/jinghangli/Desktop/Pitt Fall 2020/GPN/KLU_APC2_Master_2020_12_16.xlsx")
+data <- import("/Users/jinghangli/Documents/R/KLU_APC2_Master_2021_04_08.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
@@ -275,9 +275,12 @@ plot(data$FaceNames_Pos_Novel_Control_Frontal_Sup_Medial_AbsAsymmetry_LR, data$F
 
 mdl4 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$FDG_SUVR_GTM_FS_Global, method = "pearson", use = "complete.obs")
 mdl44 <- cor.test(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_AbsAsymmetry_LR, data$FDG_SUVR_GTM_FS_Global, method = "pearson", use = "complete.obs")
-reg <- lm( FDG_SUVR_GTM_FS_Global ~  FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data = data)
+reg <- lm(FDG_SUVR_GTM_FS_Global ~  FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data = data)
 h <- ggplot(data, aes(x = FDG_SUVR_GTM_FS_Global, y =FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR )) + geom_point()
-h + labs(x = 'Global Cerebral Metabolism (FDG PET SUVR, a.u.)', y = 'Middle Frontal Gyrus Asymmetry (a.u.)') + geom_smooth(method=lm, se = FALSE, color = 'black')
+h + labs(x = 'Global Cerebral Metabolism (FDG PET SUVR, a.u.)', 
+         y = 'Middle Frontal Gyrus Asymmetry (a.u.)') + 
+  ggtitle("Global Cerebral Metabolism Correlation with Middle Frontal Gyrus Asymmetry") + 
+  geom_smooth(method=lm, se = FALSE, color = 'black')
 
 plot(data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR, data$FDG_SUVR_GTM_FS_Global)
 abline(reg, col = 'blue')
@@ -1130,4 +1133,22 @@ t.test(data$STRINTERFERENCE[data$PiB_Median_Split == 'low_PiB'],
        data$STRINTERFERENCE[data$PiB_Median_Split == 'high_PiB'])
 sum(is.na(data$STRINTERFERENCE))
 
+## FDG vs Middle frontal gyrus asymmetry index (removing the min and max FDG points)
+
+FDG_SUVR_GTM_FS_Global <- data$FDG_SUVR_GTM_FS_Global[-c(which.min(data$FDG_SUVR_GTM_FS_Global),
+                                                              which.max(data$FDG_SUVR_GTM_FS_Global))]
+FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR <- data$FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR[-c(which.min(data$FDG_SUVR_GTM_FS_Global),
+                                                              which.max(data$FDG_SUVR_GTM_FS_Global))]
+prePrintPlot <- data.frame(FDG_SUVR_GTM_FS_Global, FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR)
+h <- ggplot(prePrintPlot, aes(x = FDG_SUVR_GTM_FS_Global, y =FaceNames_Pos_Novel_Control_Frontal_Mid_2_Asymmetry_LR )) + geom_point()
+
+h + labs(x = 'Global Cerebral Metabolism (FDG PET SUVR, a.u.)', 
+         y = 'Middle Frontal Gyrus Asymmetry (a.u.)') + 
+  ggtitle("Global Cerebral Metabolism Correlation with Middle Frontal Gyrus Asymmetry") + 
+  geom_smooth(method=lm, se = FALSE, color = 'black') +
+  theme(
+    plot.title = element_text(color="black", size=14, face="bold"),
+    axis.title.x = element_text(color="black", size=14, face="bold"),
+    axis.title.y = element_text(color="black", size=14, face="bold")
+  )
 
