@@ -1147,8 +1147,8 @@ h + labs(x = 'Global Cerebral Metabolism (FDG PET SUVR, a.u.)',
   ggtitle("Global Cerebral Metabolism Correlation with Middle Frontal Gyrus Asymmetry") + 
   geom_smooth(method=lm, se = FALSE, color = 'black') +
   theme(
-    plot.title = element_text(color="black", size=14, face="bold"),
-    axis.title.x = element_text(color="black", size=14, face="bold"),
-    axis.title.y = element_text(color="black", size=14, face="bold")
+    plot.title = element_text(color="black", size=8, face="bold"),
+    axis.title.x = element_text(color="black", size=8, face="bold"),
+    axis.title.y = element_text(color="black", size=8, face="bold")
   )
 
