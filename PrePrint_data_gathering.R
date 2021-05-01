@@ -9,8 +9,8 @@ library('ppcor')
 # IMPORTING Data ###########################################################
 
 library("readxl")
-#data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
-data <- import("/Users/jinghangli/Documents/R/KLU_APC2_Master_2021_04_08.xlsx")
+data <- read_excel("C:\\Users\\mount\\OneDrive\\Documents\\GPN\\KLU_APC2_Master_2020_12_16.xlsx");
+#data <- import("/Users/jinghangli/Documents/R/KLU_APC2_Master_2021_04_08.xlsx")
 data <- data[is.na(data$FaceNames_Exclude),] #Issues with face name data and only 1 scan/subject - 87 observations
 data <- data[data$Visit_Relative == 1,] # Comment out for longitudinal studies
 data <- data[!is.na(data$FaceNames_GoodCoverage),]
@@ -903,31 +903,57 @@ sd(as.numeric(data$FaceName_PostScanAccuracy), na.rm= TRUE)
 sum(is.na(data$FaceName_PostScanAccuracy))
 
 #cognitive domains
+
 #memory learning
+mean(data$memory_learning[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$memory_learning[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$memory_learning[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$memory_learning[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
 t.test(data$memory_learning[data$PiB_Median_Split == 'low_PiB'], 
        data$memory_learning[data$PiB_Median_Split == 'high_PiB'])
 #Number missing:
 sum(is.na(data$memory_learning))
 
 #memory retrieval
+mean(data$memory_retrieval[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$memory_retrieval[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$memory_retrieval[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$memory_retrieval[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
 t.test(data$memory_retrieval[data$PiB_Median_Split == 'high_PiB'], 
        data$memory_retrieval[data$PiB_Median_Split == 'low_PiB'])
 #Number missing:
 sum(is.na(data$memory_retrieval))
 
 #visuospatial
+mean(data$visuospatial[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$visuospatial[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$visuospatial[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$visuospatial[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
 t.test(data$visuospatial[data$PiB_Median_Split == 'low_PiB'], 
        data$visuospatial[data$PiB_Median_Split == 'high_PiB'])
 #Number missing
 sum(is.na(data$visuospatial))
 
 #language
+mean(data$language[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$language[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$language[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$language[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
 t.test(data$language[data$PiB_Median_Split == 'low_PiB'], 
        data$language[data$PiB_Median_Split == 'high_PiB'])
 #Number missing
 sum(is.na(data$language))
 
 #executive attention
+mean(data$executive_attention[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+sd(data$executive_attention[data$PiB_Median_Split == 'high_PiB'], na.rm= TRUE)
+mean(data$executive_attention[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+sd(data$executive_attention[data$PiB_Median_Split == 'low_PiB'], na.rm= TRUE)
+
 t.test(data$executive_attention[data$PiB_Median_Split == 'low_PiB'], 
        data$executive_attention[data$PiB_Median_Split == 'high_PiB'])
 #Number missing
